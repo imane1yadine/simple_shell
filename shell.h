@@ -12,14 +12,14 @@
 #include <signal.h>
 #include <limits.h>
 
-/* toem_strings.c */
+/* enami_strings.c */
 int _strlen(char *);
 char *_strcat(char *, char *);
 void _puts(char *);
 int _putchar(char);
 char *_strcpy(char *, char *);
 
-/* toem_strings2.c */
+/* enami_strings2.c */
 char *_strdup(const char *);
 int _strcmp(char *, char *);
 char *starts_with(const char *, const char *);
