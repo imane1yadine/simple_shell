@@ -125,7 +125,7 @@ char *starts_with(const char *, const char *);
 /* enami_paths.c */
 int is_cmd(info_t *, char *);
 char *dup_chars(char *, int, int);
-char *find_path(info_t *, char *, char *);
+char *find_path(void)
 char *append_path(char *path, char *command);
 
 #endif

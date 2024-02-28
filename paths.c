@@ -50,13 +50,13 @@ char *dup_chars(char *pathstr, int start, int stop)
 char *find_path(void)
 {
 	int i;
-	char **envi = environ, *path = NULL;
+	char **enami = environ, *path = NULL;
 
-	while (*envi)
+	while (*enami)
 	{
-		if (_strncmp(*envi, "PATH=", 5) == 0)
+		if (_strncmp(*enami, "PATH=", 5) == 0)
 		{
-			path = *envi;
+			path = *enami;
 			while (*path && i < 5)
 			{
 				path++;
@@ -64,7 +64,7 @@ char *find_path(void)
 			}
 			return (path);
 		}
-		envi++;
+		enami++;
 	}
 	return (NULL);
 }
