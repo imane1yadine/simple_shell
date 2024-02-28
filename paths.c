@@ -129,16 +129,3 @@ char *append_path(char *path, char *command)
 	buf[i + j] = '\0';
 	return (buf);
 }
-
-/**
- * find_full_path - finds the full path for the command
- * @info: the info struct
- * @command: the command to find
- *
- * Return: full path of cmd if found, NULL otherwise
- */
-char *find_full_path(info_t *info, char *command)
-{
-	char *path = getenv("PATH");
-	char *full_path;
-}
