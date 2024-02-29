@@ -12,6 +12,9 @@
 #include <signal.h>
 #include <limits.h>
 
+#define MAX_INPUT 1024
+#define MAX_PATH 256
+
 /* for read/write buffers */
 #define READ_BUF_SIZE 1024
 #define WRITE_BUF_SIZE 1024
