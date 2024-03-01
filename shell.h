@@ -131,4 +131,11 @@ char *dup_chars(char *, int, int);
 char *find_path(void)
 char *append_path(char *path, char *command);
 
+/* enami_getline.c */
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+int read_character(char *c, ssize_t *input, char *buffer)
+void handle_buffer_resize(char **buffer, ssize_t *input)
+
 #endif

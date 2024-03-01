@@ -1,95 +1,51 @@
 #include <shell.h>
 
-
 /**
- * display_prompt - Displays the shell prompt
- *
- * This function is responsible for
- * displaying the shell prompt to the user.
- * The prompt is a simple string, such as "#cisfun$ ".
+ * Display the shell prompt.
  */
 
-void display_prompt()
-{
-	char prompt[] = "#cisfun$ ";
-	write(STDOUT_FILENO, prompt, sizeof(prompt) - 1);
-	write(STDOUT_FILENO, " ", 1);  /* Add a space after the prompt*/
+void display_prompt() {
+    write(STDOUT_FILENO, "$ ", 2);
 }
 
 /**
- * execute_command - Executes a command using fork and execve
- * @command: The command to be executed
+ * Execute the given command.
  */
 
-void execute_command(char *command)
-{
-	pid_t pid, wpid;
-	int status;
-
-	pid = fork();
-
-	if (pid == 0)
-	{
-		if (execve(command, NULL, NULL) == -1)
-		{
-			char error_msg[] = "shell: command not found\n";
-			write(STDERR_FILENO, error_msg, sizeof(error_msg) - 1);
-		}
-		exit(EXIT_FAILURE);
-	}
-	else if (pid < 0)
-	{
-		char error_msg[] = "shell: fork failed\n";
-		write(STDERR_FILENO, error_msg, sizeof(error_msg) - 1);
-	}
-	else
-	{
-		do
-		{
-			wpid = waitpid(pid, &status, WUNTRACED);
-		}
-		while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	}
+void execute_command(const char *command) {
+    pid_t child_pid = fork();
+    if (child_pid == -1) {
+        /* Error handling for fork failure*/
+        _exit(EXIT_FAILURE);
+    } else if (child_pid == 0) {
+        /* Child process*/
+        execlp(command, command, NULL);
+        /* Error handling for execlp failure*/
+        _exit(EXIT_FAILURE);
+    } else {
+        /* Parent process*/
+        waitpid(child_pid, NULL, 0);
+    }
 }
 
 /**
- * main - Entry point for the simple shell
- *
- * This function serves as the entry point for
- * the simple shell program.
- * It initializes necessary variables
- * and enters the main loop to wait for
- * user input and execute commands.
- *
- * Return: 0 on successful execution.
+ * Main function for the shell.
  */
 
-int main()
-{
-	char input[MAX_INPUT];
-
-	while (1)
-	{
-		display_prompt();
-
-		if (read(STDIN_FILENO, input, MAX_INPUT) <= 0)
-		{
-			/* Handle Ctrl+D (EOF)*/
-			write(STDOUT_FILENO, "\n", 1);
-			break;
-		}
-
-		/*Remove the trailing newline character*/
-		input[strcspn(input, "\n")] = '\0';
-
-		if (strcmp(input, "exit") == 0)
-		{
-			/* Exit the shell*/
-			break;
-		}
-
-		execute_command(input);
-	}
-
-	return (0);
+int main() {
+    char user_input[MAX_INPUT_LENGTH];
+    while (1) {
+        display_prompt();
+        if (read(STDIN_FILENO, user_input, sizeof(user_input)) == -1) {
+            /* Handle Ctrl+D (end of file)*/
+            write(STDOUT_FILENO, "\nGoodbye!\n", 10);
+            break;
+        }
+        user_input[strcspn(user_input, "\n")] = '\0'; /* Remove newline*/
+        if (strlen(user_input) == 0) {
+            continue; /* Ignore empty input*/
+        }
+        execute_command(user_input);
+    }
+    return (0);
 }
