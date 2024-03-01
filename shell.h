@@ -25,6 +25,7 @@ int _strcmp(const char *s1, const char *s2);
 size_t _strlen(const char *s);
 char *_strcat(char *dest, const char *src);
 char *_strcpy(char *dest, const char *src);
+int _execute(char **command, char **argv);
 
 int starts_with(const char *str, const char *prefix);
 void _puts(const char *str);

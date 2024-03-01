@@ -47,7 +47,7 @@ char *read_line(void)
 	size_t len = 0;
 	ssize_t n;
 
-	write(STDOUT_FILENO "$", 2);
+	write(STDOUT_FILENO, "$", 1);
 	n = getline(&line, &len, stdin);
 	if (n == -1)
 	{
@@ -68,7 +68,7 @@ char *read_line(void)
  */
 char **tokenizer(char *line)
 {
-	char *token = NULL, tmp = NULL;
+	char *token = NULL, *tmp = NULL;
 	char **command = NULL;
 	int count = 0, i = 0;
 
@@ -83,7 +83,7 @@ char **tokenizer(char *line)
 	}
 	free(tmp), tmp = NULL;
 
-	command = malloc(sizeof(char *) * (cpt + 1));
+	command = malloc(sizeof(char *) * (count + 1));
 	if (command == NULL)
 	{
 		free(line);
@@ -118,7 +118,7 @@ int _execute(char **command, char **argv)
 
 	if (momo == 0)
 	{
-		if (exexve(command[0], command, environ) == -1)
+		if (execve(command[0], command, environ) == -1)
 		{
 			perror(argv[0]);
 			freearr2d(command);
@@ -126,8 +126,8 @@ int _execute(char **command, char **argv)
 	}
 	else
 	{
-		waitpid(momo, &status, 0)
-			freearr2d(command);
+		waitpid(momo, &status, 0);
+		freearr2d(command);
 	}
 	return (WEXITSTATUS(status));
 }
